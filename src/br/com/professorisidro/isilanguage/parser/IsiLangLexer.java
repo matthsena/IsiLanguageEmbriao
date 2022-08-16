@@ -120,8 +120,8 @@ public class IsiLangLexer extends Lexer {
 			}
 		}
 		
-		public void generateCode(){
-			program.generateTarget();
+		public String generateCode(){
+			return program.generateTarget();
 		}
 
 

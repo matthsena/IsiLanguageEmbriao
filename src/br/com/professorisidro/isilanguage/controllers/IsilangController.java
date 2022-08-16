@@ -15,6 +15,8 @@ import br.com.professorisidro.isilanguage.parser.IsiLangParser;
 public class IsilangController {
 	@PostMapping("/")
 	public String index(@RequestBody String input) {
+		String javaCode = "";
+		
 		try {
 			IsiLangLexer lexer;
 			IsiLangParser parser;
@@ -31,9 +33,8 @@ public class IsilangController {
 			
 			parser.exibeComandos();
 			
-			parser.generateCode();
+			javaCode = parser.generateCode();
 			
-			return input;
 		}
 		catch(IsiSemanticException ex) {
 			System.err.println("Semantic error - "+ex.getMessage());
@@ -42,7 +43,7 @@ public class IsilangController {
 			ex.printStackTrace();
 			System.err.println("ERROR "+ex.getMessage());
 		}
-		return input;
+		return javaCode;
 	}
 }
 	

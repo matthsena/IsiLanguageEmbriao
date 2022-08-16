@@ -30,7 +30,7 @@
 		
 		<dependency>
 		    <groupId>org.antlr</groupId>
-		    <artifactId>antlr4-runtime</artifactId>
+		    <artifactId>antlr4</artifactId>
 		    <version>4.7.1</version>
 		</dependency>
 	</dependencies>
@@ -46,6 +46,15 @@
 			    <groupId>org.antlr</groupId>
 			    <artifactId>antlr4-maven-plugin</artifactId>
 			    <version>4.7.1</version>
+			    <configuration>
+			    	<sourceDirectory>${basedir}</sourceDirectory>
+			    	<outputDirectory>${basedir}/src/br/com/professorisidro/isilanguage/parser</outputDirectory>
+					<arguments>
+					     <argument>-package</argument>
+						<argument>br.com.professorisidro.isilanguage.parser</argument>
+
+					</arguments>
+			    </configuration>
 			    <executions>
 			        <execution>
 			            <goals>

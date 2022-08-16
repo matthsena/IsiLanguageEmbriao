@@ -12,7 +12,9 @@ public class IsiProgram {
 	private ArrayList<AbstractCommand> comandos;
 	private String programName;
 
-	public void generateTarget() {
+	public String generateTarget() {
+		String javaCode = "";
+		
 		StringBuilder str = new StringBuilder();
 		str.append("import java.util.Scanner;\n");
 		str.append("public class MainClass{ \n");
@@ -28,13 +30,14 @@ public class IsiProgram {
 		str.append("}");
 		
 		try {
-			FileWriter fr = new FileWriter(new File("MainClass.java"));
-			fr.write(str.toString());
-			fr.close();
+			// FileWriter fr = new FileWriter(new File("MainClass.java"));
+			javaCode = str.toString();
+			// fr.close();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		return javaCode;
 
 	}
 
