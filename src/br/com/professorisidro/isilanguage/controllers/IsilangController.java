@@ -1,5 +1,6 @@
 package br.com.professorisidro.isilanguage.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +15,9 @@ import br.com.professorisidro.isilanguage.parser.IsiLangParser;
 @RestController
 public class IsilangController {
 	@PostMapping("/")
-	public String index(@RequestBody String input) {
+	public ResponseEntity<String> index(@RequestBody String input) {
 		String javaCode = "";
+		String errorMsg = "";
 		
 		try {
 			IsiLangLexer lexer;
@@ -35,15 +37,21 @@ public class IsilangController {
 			
 			javaCode = parser.generateCode();
 			
+			return ResponseEntity.status(200).body(javaCode);
 		}
 		catch(IsiSemanticException ex) {
-			System.err.println("Semantic error - "+ex.getMessage());
+			errorMsg = "Semantic error - "+ex.getMessage();
+			System.err.println(errorMsg);
+			
+			return ResponseEntity.status(500).body(errorMsg);
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
-			System.err.println("ERROR "+ex.getMessage());
+			errorMsg = "ERROR "+ex.getMessage();
+			System.err.println(errorMsg);
+			
+			return ResponseEntity.status(500).body(errorMsg);
 		}
-		return javaCode;
 	}
 }
 	
