@@ -33,6 +33,12 @@
 		    <artifactId>antlr4</artifactId>
 		    <version>4.7.1</version>
 		</dependency>
+		
+		<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpclient</artifactId>
+		  <scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

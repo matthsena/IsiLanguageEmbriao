@@ -1,6 +1,7 @@
 package br.com.professorisidro.isilanguage.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,8 @@ import br.com.professorisidro.isilanguage.parser.IsiLangParser;
 
 @RestController
 public class IsilangController {
+	
+	@CrossOrigin(origins = "*")
 	@PostMapping("/")
 	public ResponseEntity<String> index(@RequestBody String input) {
 		String javaCode = "";
