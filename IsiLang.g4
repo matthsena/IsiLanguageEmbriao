@@ -47,6 +47,10 @@ grammar IsiLang;
 	public String generateCode(){
 		return program.generateTarget();
 	}
+
+	public ArrayList<String> getUnusedVars(){  
+		return program.getVariaveisInutilizadas();
+	}
 }
 
 prog	: 'programa' decl bloco  'fimprog;'

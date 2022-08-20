@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -21,6 +23,7 @@ public class IsilangController {
 	public ResponseEntity<String> index(@RequestBody String input) {
 		String javaCode = "";
 		String errorMsg = "";
+		String warningMsg = "";
 		
 		try {
 			IsiLangLexer lexer;
@@ -39,8 +42,18 @@ public class IsilangController {
 			parser.exibeComandos();
 			
 			javaCode = parser.generateCode();
+
+			ArrayList<String> unusedVars = parser.getUnusedVars();
 			
-			return ResponseEntity.status(200).body(javaCode);
+			if (!unusedVars.isEmpty()) {
+				System.out.println("VARIAVEIS NAO UTILIZADAS");
+				System.out.println(unusedVars.toString());
+				
+				warningMsg = "Unused variable(s): " + unusedVars.toString();
+				return ResponseEntity.status(200).header("warning", warningMsg).body(javaCode);
+			} else {
+				return ResponseEntity.status(200).body(javaCode);
+			}			
 		}
 		catch(IsiSemanticException ex) {
 			errorMsg = "Semantic error - "+ex.getMessage();

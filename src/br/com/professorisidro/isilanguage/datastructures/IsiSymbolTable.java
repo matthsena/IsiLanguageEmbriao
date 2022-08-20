@@ -2,7 +2,6 @@ package br.com.professorisidro.isilanguage.datastructures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class IsiSymbolTable {
 	
@@ -24,7 +23,7 @@ public class IsiSymbolTable {
 	public IsiSymbol get(String symbolName) {
 		return map.get(symbolName);
 	}
-	
+
 	public ArrayList<IsiSymbol> getAll(){
 		ArrayList<IsiSymbol> lista = new ArrayList<IsiSymbol>();
 		for (IsiSymbol symbol : map.values()) {
