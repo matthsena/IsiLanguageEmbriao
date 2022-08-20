@@ -24,6 +24,7 @@ grammar IsiLang;
 	private IsiProgram program = new IsiProgram();
 	private ArrayList<AbstractCommand> curThread;
 	private Stack<ArrayList<AbstractCommand>> stack = new Stack<ArrayList<AbstractCommand>>();
+	private Stack<String> decision = new Stack<String>;
 	private String _readID;
 	private String _writeID;
 	private String _exprID;
@@ -31,6 +32,8 @@ grammar IsiLang;
 	private String _exprDecision;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
+	private ArrayList<AbstractCommand> commands;
+	private ArrayList<AbstractCommand> emptyList =  new ArrayList<AbstractCommand>();
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -102,7 +105,8 @@ bloco	: { curThread = new ArrayList<AbstractCommand>();
 cmd		:  cmdleitura  
  		|  cmdescrita 
  		|  cmdattrib
- 		|  cmdselecao  
+ 		|  cmdselecao
+ 		| cmdenquanto
 		;
 		
 cmdleitura	: 'leia' AP
@@ -179,6 +183,38 @@ cmdselecao  :  'se' AP
                    	}
                    )?
             ;
+
+cmdenquanto : 'enquanto' AP {
+                    _exprContent = "";
+                  }
+                  expr {
+                      decision.push(_exprContent);
+                  }
+                  OPREL {
+                      String op = _input.LT(-1).getText();
+                      String atual = decision.pop();
+                      String novo = atual + op;
+                      decision.push(novo);
+                      _exprContent = "";
+                  }
+                  expr {
+                      atual = decision.pop();
+                      novo = atual + _exprContent;
+                      decision.push(novo);
+                  }
+                  FP
+                  ACH {
+                      curThread = new ArrayList<AbstractCommand>();
+                      stack.push(curThread);
+                      }
+                      (cmd)+
+                  FCH {
+                     commands = stack.pop();
+                     System.out.println(commands);
+                     CommandRepita cmdRepita = new CommandRepita(decision.pop(), commands);
+                     stack.peek().add(cmdRepita);
+                 }
+        ;
 			
 expr		:  termo ( 
 	                  OP  { _exprContent += _input.LT(-1).getText();}
