@@ -50,7 +50,10 @@ public class IsilangController {
 				System.out.println(unusedVars.toString());
 				
 				warningMsg = "Unused variable(s): " + unusedVars.toString();
-				return ResponseEntity.status(200).header("warning", warningMsg).body(javaCode);
+				return ResponseEntity.status(200)
+						.header("Access-Control-Expose-Headers", "warning")
+						.header("warning", warningMsg)
+						.body(javaCode);
 			} else {
 				return ResponseEntity.status(200).body(javaCode);
 			}			
