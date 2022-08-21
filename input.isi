@@ -1,18 +1,14 @@
 programa
 
-  numero potencia;
-  numero raiz;
-  numero logaritmo;
+  numero n1, n2;
   
-  numero potencia2, raiz2, logaritmo2;
-  	
-  potencia = 5^3+7;
-  raiz = sqrt(5);
-  logaritmo = log9(20);
+  leia(n1);
+  leia(n2);
   
-  potencia2 = potencia^3+7;
-  raiz = sqrt(potencia);
-  logaritmo = log9(raiz);
+  enquanto (n1 > n2) {
+  	n2 = n2 + 1;
+  }
   
+
   
 fimprog;
