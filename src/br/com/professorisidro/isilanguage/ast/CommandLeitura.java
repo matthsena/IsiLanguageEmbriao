@@ -20,5 +20,10 @@ public class CommandLeitura extends AbstractCommand {
 	public String toString() {
 		return "CommandLeitura [id=" + id + "]";
 	}
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 
 }

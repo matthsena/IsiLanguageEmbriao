@@ -15,7 +15,6 @@ public class CommandAtribuicao extends AbstractCommand{
 		return id + " = "+expr+";";
 	}
 
-	@Override
 	public String getId() {
 		return id;
 	}

@@ -37,6 +37,12 @@ public class CommandDecisao extends AbstractCommand {
 		return "CommandDecisao [condition=" + condition + ", listaTrue=" + listaTrue + ", listaFalse=" + listaFalse
 				+ "]";
 	}
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return condition;
+	}
+
 	
 	
 

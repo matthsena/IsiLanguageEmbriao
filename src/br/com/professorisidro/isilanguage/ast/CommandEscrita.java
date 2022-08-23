@@ -16,6 +16,11 @@ public class CommandEscrita extends AbstractCommand {
 	public String toString() {
 		return "CommandEscrita [id=" + id + "]";
 	}
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 	
 
 }

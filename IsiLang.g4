@@ -11,6 +11,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.CommandEscrita;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
+	import br.com.professorisidro.isilanguage.ast.CommandRepeticao;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -29,6 +30,7 @@ grammar IsiLang;
 	private String _exprID;
 	private String _exprContent;
 	private String _exprDecision;
+	private String _exprRepetition;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
 	
@@ -106,7 +108,8 @@ bloco	: { curThread = new ArrayList<AbstractCommand>();
 cmd		:  cmdleitura  
  		|  cmdescrita 
  		|  cmdattrib
- 		|  cmdselecao  
+ 		|  cmdselecao
+		|  cmdenquanto
 		;
 		
 cmdleitura	: 'leia' AP
@@ -183,7 +186,25 @@ cmdselecao  :  'se' AP
                    	}
                    )?
             ;
-			
+
+cmdenquanto :  'enquanto'
+				AP
+				ID{ _exprRepetition = _input.LT(-1).getText(); }
+				OPREL { _exprRepetition += _input.LT(-1).getText(); }
+				(ID | NUMBER) { _exprRepetition += _input.LT(-1).getText(); }
+				FP
+				ACH {
+					curThread = new ArrayList<AbstractCommand>();
+					stack.push(curThread);
+				}
+				(cmd)+
+				FCH {
+					listaTrue = stack.pop();
+					CommandRepeticao cmd = new CommandRepeticao(_exprRepetition, listaTrue);
+					stack.peek().add(cmd);
+				}
+			;
+
 expr		:  termo ( 
 	                  OP  { _exprContent += _input.LT(-1).getText();}
 	                  termo
