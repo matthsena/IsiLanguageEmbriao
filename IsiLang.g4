@@ -33,6 +33,10 @@ grammar IsiLang;
 	private String _exprRepetition;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
+	private String _varBase;
+  	private String _varIndex;
+	private String _varLog;
+	private String _varSqrt;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -53,6 +57,19 @@ grammar IsiLang;
 	public ArrayList<String> getUnusedVars(){  
 		return program.getVariaveisInutilizadas();
 	}
+	
+	public String mathExprExp(String _varBase, String _varIndex){
+		return "Math.pow(" + _varBase + "," + _varIndex + ")";
+	}
+
+	public String mathExprLog(String _varLog){
+		return "Math.log(" + _varLog + ")";
+	}
+
+	public String mathExprSqrt(String _varSqrt){
+		return "Math.sqrt(" + _varSqrt + ")";
+	}
+	
 }
 
 prog	: 'programa' decl bloco  'fimprog;'
@@ -215,39 +232,46 @@ termo		: ID { verificaID(_input.LT(-1).getText());
 	               _exprContent += _input.LT(-1).getText();
                  } 
             | 
-              NUMBER
-              {
-              	_exprContent += _input.LT(-1).getText();
-              }
+              NUMBER { _exprContent += _input.LT(-1).getText(); }
             |
-              LOGARITHM
-              {
-              	_exprContent += _input.LT(-1).getText();
-              }
+              EXPONENTIAL {	_exprContent += mathExprExp(_varBase, _varIndex); }
             |
-              SQUAREROOT
-              {
-              	_exprContent += _input.LT(-1).getText();
-              } 
+              LOGARITHM { _exprContent += mathExprLog(_varLog); }
+            |
+              SQUAREROOT { _exprContent += mathExprSqrt(_varSqrt); }
 			;
 
 booleano : 'true' { _exprContent += _input.LT(-1).getText(); } 
 			| 
 		   'false' { _exprContent += _input.LT(-1).getText(); }
          ;
-             
-LOGARITHM : 'log' 
-            NUMBER
-            AP 
-            (NUMBER | ID) 
+      
+EXPONENTIAL : AP
+		      (NUMBER | ID) { verificaID(_input.LT(-1).getText());
+	    					  _varBase = _input.LT(-1).getText();
+ 							 }
+ 			  CIRFLEX
+              (NUMBER | ID) { verificaID(_input.LT(-1).getText());
+                              _varIndex = _input.LT(-1).getText();
+                            }
+              FP
+            ;
+            
+LOGARITHM : 'log'
+            AP
+            (NUMBER | ID) { verificaID(_input.LT(-1).getText());
+                            _varLog = _input.LT(-1).getText();
+                          }
             FP
           ;
-          
-SQUAREROOT :  'sqrt' 
-               AP 
-               (NUMBER | ID) 
-               FP
-            ;
+
+SQUAREROOT : 'sqrt'
+             AP
+             (NUMBER | ID) { verificaID(_input.LT(-1).getText());
+                             _varSqrt = _input.LT(-1).getText();
+                           }
+             FP
+           ;
 	
 AP	: '('
 	;
@@ -260,6 +284,8 @@ SC	: ';'
 	
 OP	: '+' | '-' | '*' | '/' | '^'
 	;
+
+CIRFLEX : '^'        ;
 	
 ATTR : '='
 	 ;
