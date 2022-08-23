@@ -15,9 +15,9 @@ public class CommandRepeticao extends AbstractCommand {
 	@Override
 	public String generateJavaCode() {
 		StringBuilder str = new StringBuilder();
-		str.append("while ("+expr+") {\n");
+		str.append("while (" + expr + ") {\n");
 
-		for (AbstractCommand cmd: list) {
+		for (AbstractCommand cmd : list) {
 			str.append(cmd.generateJavaCode());
 		}
 
@@ -33,7 +33,7 @@ public class CommandRepeticao extends AbstractCommand {
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
-		return expr;
+		return null;
 	}
 
 }
