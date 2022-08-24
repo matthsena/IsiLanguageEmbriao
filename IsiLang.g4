@@ -93,9 +93,10 @@ declaravar :  tipo ID  {
                SC
            ;
            
-tipo       : 'numero'   { _tipo = IsiVariable.NUMBER;  }
-           | 'texto'    { _tipo = IsiVariable.TEXT;    }
+tipo       : 'texto'    { _tipo = IsiVariable.TEXT;    }
            | 'booleano' { _tipo = IsiVariable.BOOLEAN; }
+           | 'inteiro'  { _tipo = IsiVariable.INT;     }
+           | 'real'  	{ _tipo = IsiVariable.DOUBLE;  }
            ;
         
 bloco	: { curThread = new ArrayList<AbstractCommand>(); 
@@ -159,7 +160,7 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
 cmdselecao  :  'se' AP
                     ID    { _exprDecision = _input.LT(-1).getText(); }
                     OPREL { _exprDecision += _input.LT(-1).getText(); }
-                    (ID | NUMBER) {_exprDecision += _input.LT(-1).getText(); }
+                    (ID | INT | DOUBLE) {_exprDecision += _input.LT(-1).getText(); }
                     FP 
                     ACH 
                     { curThread = new ArrayList<AbstractCommand>(); 
@@ -191,7 +192,7 @@ cmdenquanto :  'enquanto'
 				AP
 				ID{ _exprRepetition = _input.LT(-1).getText(); }
 				OPREL { _exprRepetition += _input.LT(-1).getText(); }
-				(ID | NUMBER) { _exprRepetition += _input.LT(-1).getText(); }
+				(ID | INT | DOUBLE) { _exprRepetition += _input.LT(-1).getText(); }
 				FP
 				ACH {
 					curThread = new ArrayList<AbstractCommand>();
@@ -215,7 +216,12 @@ termo		: ID { verificaID(_input.LT(-1).getText());
 	               _exprContent += _input.LT(-1).getText();
                  } 
             | 
-              NUMBER
+              INT
+              {
+              	_exprContent += _input.LT(-1).getText();
+              }
+            |
+              DOUBLE
               {
               	_exprContent += _input.LT(-1).getText();
               }
@@ -237,15 +243,15 @@ booleano : 'true' { _exprContent += _input.LT(-1).getText(); }
          ;
              
 LOGARITHM : 'log' 
-            NUMBER
+            (INT | DOUBLE)
             AP 
-            (NUMBER | ID) 
+            (INT | DOUBLE | ID) 
             FP
           ;
           
 SQUAREROOT :  'sqrt' 
                AP 
-               (NUMBER | ID) 
+               (INT | DOUBLE | ID) 
                FP
             ;
 	
@@ -278,8 +284,12 @@ OPREL : '>' | '<' | '>=' | '<=' | '==' | '!='
       
 ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	;
-	
-NUMBER	: [0-9]+ ('.' [0-9]+)?
-		;				
+
+INT : [0-9]+ 
+	;
+
+DOUBLE : INT '.' INT
+	   | '.' INT
+	   ;			
         		
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;
