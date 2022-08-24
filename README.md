@@ -28,6 +28,9 @@ Embriao da IsiLanguage - curso de Compiladores
 - [X] Criar um editor Web para o código
 - [X] Tornar o compilador um Webservice para receber programas e enviar respostas de possíveis erros
 
+### Link do repositório do editor Web
+[Link do repositório do editor](https://github.com/matthsena/isilang-webeditor)
+
 ## Link para o vídeo do Youtube
 
-[Link do vídeo](http://pudim.com.br)
+[Link do vídeo](https://www.youtube.com/watch?v=a80nSnZFRAE&feature=youtu.be)
